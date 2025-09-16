@@ -1,58 +1,66 @@
-// Product data
-const products = [
-    {
-        id: 1,
-        name: "Chicken Momo",
-        description: "Juicy chicken wrapped in soft dough with authentic spices",
-        price: 250,
-        image: "https://images.unsplash.com/photo-1496412705862-e0088f16f791?w=400&h=300&fit=crop",
-        category: "non-veg"
-    },
-    {
-        id: 2,
-        name: "Veg Momo",
-        description: "Fresh vegetables and herbs in traditional steamed dumplings",
-        price: 200,
-        image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop",
-        category: "veg"
-    },
-    {
-        id: 3,
-        name: "Paneer Momo",
-        description: "Cottage cheese with aromatic spices in delicate wrappers",
-        price: 280,
-        image: "https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&h=300&fit=crop",
-        category: "veg"
-    },
-    {
-        id: 4,
-        name: "Buff Momo",
-        description: "Traditional buffalo meat momos with authentic Nepali taste",
-        price: 300,
-        image: "https://images.unsplash.com/photo-1563379091755-de3815efea9b?w=400&h=300&fit=crop",
-        category: "non-veg"
-    },
-    {
-        id: 5,
-        name: "Chicken Chilli Momo",
-        description: "Spicy chicken momos with chilli and garlic flavoring",
-        price: 320,
-        image: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&h=300&fit=crop",
-        category: "non-veg"
-    },
-    {
-        id: 6,
-        name: "Mixed Veg Momo",
-        description: "Assorted vegetables with mushrooms and tofu blend",
-        price: 230,
-        image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-        category: "veg"
-    }
-];
+// Product data - will be fetched from backend
+let products = [];
 
 // Cart
 let cart = JSON.parse(localStorage.getItem('frozenMomoCart')) || [];
 
+// Fetch products from backend
+async function fetchProducts() {
+    const productsGrid = $('#productsGrid');
+    
+    // Show loading state
+    if (productsGrid.length > 0) {
+        productsGrid.html(`
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Loading delicious momos...</p>
+            </div>
+        `);
+    }
+
+    try {
+        const response = await fetch('/api/products');
+        if (!response.ok) {
+            throw new Error('Failed to fetch products');
+        }
+        const data = await response.json();
+        products = data.map(product => ({
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            image: product.image_url, // No fallback - let it be null/empty
+            category: product.category,
+            status: product.status
+        })).filter(product => product.status === 'active'); // Only show active products
+        
+        loadProducts(); // Load products after fetching
+        return products;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        
+        // Show error state
+        if (productsGrid.length > 0) {
+            productsGrid.html(`
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h5>Failed to load products</h5>
+                    <p class="text-muted">Please check your connection and try again.</p>
+                    <button class="btn btn-custom" onclick="fetchProducts()">
+                        <i class="fas fa-refresh me-2"></i>Retry
+                    </button>
+                </div>
+            `);
+        }
+        
+        showToast('Failed to load products. Please try again.', 'danger');
+        // Fallback to empty array if fetch fails
+        products = [];
+        return [];
+    }
+}
 // Load products into the grid
 function loadProducts() {
     const productsGrid = $('#productsGrid');
@@ -60,16 +68,38 @@ function loadProducts() {
 
     productsGrid.empty();
 
+    if (products.length === 0) {
+        productsGrid.html(`
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                <h5>No products available</h5>
+                <p class="text-muted">Please check back later for delicious momos!</p>
+            </div>
+        `);
+        return;
+    }
+
     products.forEach(product => {
+        // Handle image display - show empty space if no image
+        const imageStyle = product.image && product.image.trim() !== '' 
+            ? `style="background-image: url('${product.image}')"`
+            : `style="background-color: #f8f9fa; border: 2px dashed #dee2e6;"`;
+        
+        const imageContent = product.image && product.image.trim() !== '' 
+            ? '' 
+            : '<div class="d-flex align-items-center justify-content-center h-100"><i class="fas fa-image fa-2x text-muted"></i></div>';
+
         const productCard = `
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="product-card zoom-in">
-                    <div class="product-image" style="background-image: url('${product.image}')"></div>
-                    <div class="product-info">
+            <div class="col-lg-4 col-md-6 col-6 mb-4">
+                <div class="product-card zoom-in d-flex flex-column h-100">
+                    <div class="product-image" ${imageStyle}>
+                        ${imageContent}
+                    </div>
+                    <div class="product-info flex-grow-1 d-flex flex-column">
                         <h4 class="product-title">${product.name}</h4>
                         <p class="product-description">${product.description}</p>
-                        <div class="product-price">Rs. ${product.price}</div>
-                        <button class="btn btn-custom w-100" onclick="addToCart(${product.id})">
+                        <div class="product-price">${product.price ? 'Rs. ' + product.price : 'Price: Contact Us'}</div>
+                        <button class="btn btn-custom w-100 mt-auto" onclick="addToCart(${product.id})">
                             <i class="fas fa-cart-plus me-2"></i>Add to Cart
                         </button>
                     </div>
@@ -77,6 +107,12 @@ function loadProducts() {
             </div>
         `;
         productsGrid.append(productCard);
+    });
+
+    // Re-initialize animations for dynamically loaded content
+    gsap.utils.toArray('.product-card').forEach((card, i) => {
+        gsap.set(card, { opacity: 0, scale: 0.8 });
+        gsap.to(card, { opacity: 1, scale: 1, duration: 0.6, delay: i * 0.1, ease: "back.out(1.7)" });
     });
 }
 
@@ -165,10 +201,17 @@ function loadCart() {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
 
+        // Handle image in cart - show placeholder if no image
+        const cartImageHtml = item.image && item.image.trim() !== '' 
+            ? `<img src="${item.image}" alt="${item.name}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">`
+            : `<div class="rounded me-3 d-flex align-items-center justify-content-center bg-light" style="width: 60px; height: 60px; border: 1px solid #dee2e6;">
+                <i class="fas fa-image text-muted"></i>
+               </div>`;
+
         itemsHtml += `
             <div class="cart-item d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
-                    <img src="${item.image}" alt="${item.name}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                    ${cartImageHtml}
                     <div>
                         <h6 class="mb-1">${item.name}</h6>
                         <small class="text-muted">Rs. ${item.price} each</small>
@@ -304,6 +347,11 @@ function initAnimations() {
 // Init
 $(document).ready(function () {
     updateCartBadge();
-    loadProducts();   // auto-load if productsGrid exists
+    
+    // Fetch products from backend if on products page
+    if ($('#productsGrid').length > 0) {
+        fetchProducts();
+    }
+    
     initAnimations();
 });

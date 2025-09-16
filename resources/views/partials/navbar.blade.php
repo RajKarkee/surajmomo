@@ -1,7 +1,13 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/" onclick="showPage('home')">
-                <i class="fas fa-snowflake"></i> Frozen Momo
+            <a class="navbar-brand d-flex align-items-center" href="/" onclick="showPage('home')">
+                @if ($globalSettings->logo_path)
+                    <img src="{{ asset('storage/' . $globalSettings->logo_path) }}"
+                        alt="{{ $globalSettings->site_name ?? 'Logo' }}" class="logo me-2">
+                @else
+                    <i class="fas fa-utensils me-2 text-primary" style="font-size: 1.5rem;"></i>
+                @endif
+                <span class="fw-bold">{{ $globalSettings->site_name ?? 'Frozen Momo' }}</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

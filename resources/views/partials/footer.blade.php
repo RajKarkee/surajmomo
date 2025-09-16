@@ -3,16 +3,16 @@
          <div class="row">
              <div class="col-md-6">
                  <h5>Contact Information</h5>
-                 <p><i class="fas fa-envelope me-2"></i>info@frozenmomo.com</p>
-                 <p><i class="fas fa-phone me-2"></i>+977-9876543210</p>
-                 <p><i class="fas fa-map-marker-alt me-2"></i>Dharan, Nepal</p>
+                 <p><i class="fas fa-envelope me-2"></i>{{ $globalSettings->contact_email ?? 'info@frozenmomo.com' }}</p>
+                 <p><i class="fas fa-phone me-2"></i>{{ $globalSettings->contact_phone ?? '+977-9876543210' }}</p>
+                 <p><i class="fas fa-map-marker-alt me-2"></i>{{ $globalSettings->address ?? 'Dharan, Nepal' }}</p>
              </div>
              <div class="col-md-6">
                  <h5>Follow Us</h5>
                  <div class="social-icons">
-                     <a href="#"><i class="fab fa-facebook-f"></i></a>
-                     <a href="#"><i class="fab fa-instagram"></i></a>
-                     <a href="#"><i class="fab fa-twitter"></i></a>
+                     <a href="{{ $globalSettings->facebook_url ?? '#' }}"><i class="fab fa-facebook-f"></i></a>
+                     <a href="{{ $globalSettings->instagram_url ?? '#' }}"><i class="fab fa-instagram"></i></a>
+                     <a href="{{ $globalSettings->twitter_url ?? '#' }}"><i class="fab fa-twitter"></i></a>
                  </div>
              </div>
          </div>

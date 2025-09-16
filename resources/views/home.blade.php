@@ -23,15 +23,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3 col-md-6 mb-4 d-flex">
-                        <div class="product-card fade-in w-100 d-flex flex-column" style="height: 100%; min-height: 240px;">
-                            <div class="product-image d-flex align-items-center justify-content-center"
-                                style="height: 180px; background: #f8f8f8;">
+                    <div class="col-lg-3 col-md-6 col-6 mb-4 d-flex">
+                        <div class="product-card fade-in w-100 d-flex flex-column">
+                            <div class="product-image d-flex align-items-center justify-content-center">
                                 <img src="https://images.unsplash.com/photo-1496412705862-e0088f16f791?w=400&h=300&fit=crop"
                                     alt="Chicken Momo" style="height: 100%; width: 100%; object-fit: cover;">
                             </div>
-                            <div
-                                class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center p-3">
+                            <div class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center">
                                 <div>
                                     <h5 class="product-name mb-2">Chicken Momo</h5>
                                     <p class="product-price mb-3">Rs. 250</p>
@@ -41,15 +39,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 mb-4 d-flex">
-                        <div class="product-card fade-in w-100 d-flex flex-column" style="height: 100%; min-height: 240px;">
-                            <div class="product-image d-flex align-items-center justify-content-center"
-                                style="height: 180px; background: #f8f8f8;">
+                    <div class="col-lg-3 col-md-6 col-6 mb-4 d-flex">
+                        <div class="product-card fade-in w-100 d-flex flex-column">
+                            <div class="product-image d-flex align-items-center justify-content-center">
                                 <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop"
                                     alt="Veg Momo" style="height: 100%; width: 100%; object-fit: cover;">
                             </div>
-                            <div
-                                class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center p-3">
+                            <div class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center">
                                 <div>
                                     <h5 class="product-name mb-2">Veg Momo</h5>
                                     <p class="product-price mb-3">Rs. 200</p>
@@ -59,15 +55,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 mb-4 d-flex">
-                        <div class="product-card fade-in w-100 d-flex flex-column" style="height: 100%; min-height: 240px;">
-                            <div class="product-image d-flex align-items-center justify-content-center"
-                                style="height: 180px; background: #f8f8f8;">
+                    <div class="col-lg-3 col-md-6 col-6 mb-4 d-flex">
+                        <div class="product-card fade-in w-100 d-flex flex-column">
+                            <div class="product-image d-flex align-items-center justify-content-center">
                                 <img src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&h=300&fit=crop"
                                     alt="Paneer Momo" style="height: 100%; width: 100%; object-fit: cover;">
                             </div>
-                            <div
-                                class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center p-3">
+                            <div class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center">
                                 <div>
                                     <h5 class="product-name mb-2">Paneer Momo</h5>
                                     <p class="product-price mb-3">Rs. 280</p>
@@ -77,15 +71,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 mb-4 d-flex">
-                        <div class="product-card fade-in w-100 d-flex flex-column" style="height: 100%; min-height: 240px;">
-                            <div class="product-image d-flex align-items-center justify-content-center"
-                                style="height: 180px; background: #f8f8f8;">
+                    <div class="col-lg-3 col-md-6 col-6 mb-4 d-flex">
+                        <div class="product-card fade-in w-100 d-flex flex-column">
+                            <div class="product-image d-flex align-items-center justify-content-center">
                                 <img src="https://images.unsplash.com/photo-1563379091755-de3815efea9b?w=400&h=300&fit=crop"
                                     alt="Buff Momo" style="height: 100%; width: 100%; object-fit: cover;">
                             </div>
-                            <div
-                                class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center p-3">
+                            <div class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center">
                                 <div>
                                     <h5 class="product-name mb-2">Buff Momo</h5>
                                     <p class="product-price mb-3">Rs. 300</p>
@@ -95,14 +87,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 mb-4 d-flex">
-                        <div class="product-card fade-in w-100 d-flex flex-column" style="height: 100%; min-height: 240px;">
-                            <div class="product-image d-flex align-items-center justify-content-center"
-                                style="height: 180px; background: #f8f8f8;">
+                    <div class="col-lg-3 col-md-6 col-6 mb-4 d-flex">
+                        <div class="product-card fade-in w-100 d-flex flex-column">
+                            <div class="product-image d-flex align-items-center justify-content-center">
                                 <!-- No image -->
                             </div>
-                            <div
-                                class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center p-3">
+                            <div class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center">
                                 <div>
                                     <h5 class="product-name mb-2">Chicken Chilli Momo</h5>
                                     <p class="product-price mb-3">Rs. 320</p>
@@ -112,14 +102,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 mb-4 d-flex">
-                        <div class="product-card fade-in w-100 d-flex flex-column" style="height: 100%; min-height: 240px;">
-                            <div class="product-image d-flex align-items-center justify-content-center"
-                                style="height: 180px; background: #f8f8f8;">
+                    <div class="col-lg-3 col-md-6 col-6 mb-4 d-flex">
+                        <div class="product-card fade-in w-100 d-flex flex-column">
+                            <div class="product-image d-flex align-items-center justify-content-center">
                                 <!-- No image -->
                             </div>
-                            <div
-                                class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center p-3">
+                            <div class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center">
                                 <div>
                                     <h5 class="product-name mb-2">Mixed Veg Momo</h5>
                                     <p class="product-price mb-3">Rs. 230</p>
@@ -129,14 +117,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 mb-4 d-flex">
-                        <div class="product-card fade-in w-100 d-flex flex-column" style="height: 100%; min-height: 240px;">
-                            <div class="product-image d-flex align-items-center justify-content-center"
-                                style="height: 180px; background: #f8f8f8;">
+                    <div class="col-lg-3 col-md-6 col-6 mb-4 d-flex">
+                        <div class="product-card fade-in w-100 d-flex flex-column">
+                            <div class="product-image d-flex align-items-center justify-content-center">
                                 <!-- No image -->
                             </div>
-                            <div
-                                class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center p-3">
+                            <div class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center">
                                 <div>
                                     <h5 class="product-name mb-2">Cheese Corn Momo</h5>
                                     <p class="product-price mb-3">Rs. 270</p>
@@ -146,15 +132,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 mb-4 d-flex">
-                        <div class="product-card fade-in w-100 d-flex flex-column"
-                            style="height: 100%; min-height: 240px;">
-                            <div class="product-image d-flex align-items-center justify-content-center"
-                                style="height: 180px; background: #f8f8f8;">
+                    <div class="col-lg-3 col-md-6 col-6 mb-4 d-flex">
+                        <div class="product-card fade-in w-100 d-flex flex-column">
+                            <div class="product-image d-flex align-items-center justify-content-center">
                                 <!-- No image -->
                             </div>
-                            <div
-                                class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center p-3">
+                            <div class="product-info flex-grow-1 d-flex flex-column justify-content-between text-center">
                                 <div>
                                     <h5 class="product-name mb-2">Schezwan Momo</h5>
                                     <p class="product-price mb-3">Rs. 310</p>
@@ -177,7 +160,7 @@
             <div class="container">
                 <div class="row text-center mb-5">
                     <div class="col-12">
-                        <h2 class="mb-4 fade-in">Why Choose Frozen Momo?</h2>
+                        <h2 class="mb-4 fade-in">Why Choose {{ $globalSettings->site_name ?? 'Frozen Momo' }}?</h2>
                     </div>
                 </div>
                 <div class="row">

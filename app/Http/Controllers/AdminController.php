@@ -166,6 +166,9 @@ class AdminController extends Controller
 
         $settings->save();
 
+        // Clear settings cache so global settings get updated
+        clearSettingsCache();
+
         return redirect()->route('admin.settings')
                          ->with('success', 'Settings updated successfully!');
     }
