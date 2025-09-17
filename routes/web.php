@@ -26,6 +26,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/about', [AdminController::class, 'about'])->name('about');
     Route::put('/about/update', [AdminController::class, 'aboutUpdate'])->name('about.update');
     
+    // Why Choose Us routes
+    Route::get('/why-choose-us', [AdminController::class, 'whyChooseUs'])->name('why_choose_us');
+    Route::post('/why-choose-us', [AdminController::class, 'whyChooseUsStore'])->name('why_choose_us.store');
+    Route::put('/why-choose-us/{id}', [AdminController::class, 'whyChooseUsUpdate'])->name('why_choose_us.update');
+    Route::delete('/why-choose-us/{id}', [AdminController::class, 'whyChooseUsDestroy'])->name('why_choose_us.destroy');
+    
+    // Customer Testimonials routes
+    Route::get('/customer-testimonials', [AdminController::class, 'customerTestimonials'])->name('customer_testimonials');
+    Route::post('/customer-testimonials', [AdminController::class, 'customerTestimonialsStore'])->name('customer_testimonials.store');
+    Route::put('/customer-testimonials/{id}', [AdminController::class, 'customerTestimonialsUpdate'])->name('customer_testimonials.update');
+    Route::delete('/customer-testimonials/{id}', [AdminController::class, 'customerTestimonialsDestroy'])->name('customer_testimonials.destroy');
+    
     Route::get('/products/create', [AdminController::class, 'createProduct'])->name('products.create');
     Route::post('/products', [AdminController::class, 'storeProduct'])->name('products.store');
     Route::get('/products/{product}/edit', [AdminController::class, 'editProduct'])->name('products.edit');

@@ -373,5 +373,248 @@ class AdminController extends Controller
                 ->withInput();
         }
     }
+
+    /**
+     * Display Why Choose Us management page
+     */
+    public function whyChooseUs()
+    {
+        $items = \App\Models\Why_choose_us::latest()->get();
+        return view('admin.why_choose_us', compact('items'));
+    }
+
+    /**
+     * Store a new Why Choose Us item
+     */
+    public function whyChooseUsStore(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'tagline' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+        ]);
+
+        try {
+            $item = new \App\Models\Why_choose_us();
+            $item->title = $request->title;
+            $item->description = $request->description;
+            $item->tagline = $request->tagline;
+
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('why-choose-us', 'public');
+                $item->image = $imagePath;
+            }
+
+            $item->save();
+
+            return redirect()->route('admin.why_choose_us')
+                           ->with('success', 'Reason added successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Error adding reason: ' . $e->getMessage())
+                           ->withInput();
+        }
+    }
+
+    /**
+     * Update a Why Choose Us item
+     */
+    public function whyChooseUsUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'tagline' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+        ]);
+
+        try {
+            $item = \App\Models\Why_choose_us::findOrFail($id);
+            $item->title = $request->title;
+            $item->description = $request->description;
+            $item->tagline = $request->tagline;
+
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($item->image && \Storage::disk('public')->exists($item->image)) {
+                    \Storage::disk('public')->delete($item->image);
+                }
+
+                $imagePath = $request->file('image')->store('why-choose-us', 'public');
+                $item->image = $imagePath;
+            }
+
+            $item->save();
+
+            return redirect()->route('admin.why_choose_us')
+                           ->with('success', 'Reason updated successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Error updating reason: ' . $e->getMessage())
+                           ->withInput();
+        }
+    }
+
+    /**
+     * Delete a Why Choose Us item
+     */
+    public function whyChooseUsDestroy($id)
+    {
+        try {
+            $item = \App\Models\Why_choose_us::findOrFail($id);
+
+            // Delete associated image
+            if ($item->image && \Storage::disk('public')->exists($item->image)) {
+                \Storage::disk('public')->delete($item->image);
+            }
+
+            $item->delete();
+
+            return redirect()->route('admin.why_choose_us')
+                           ->with('success', 'Reason deleted successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Error deleting reason: ' . $e->getMessage());
+        }
+    }
+    
+    /**
+     * Display Customer Testimonials management page
+     */
+    public function customerTestimonials()
+    {
+        $testimonials = \App\Models\What_our_customer_say::orderBy('created_at', 'desc')->get();
+        return view('admin.what_our_customer_say', compact('testimonials'));
+    }
+
+    /**
+     * Store a new customer testimonial
+     */
+    public function customerTestimonialsStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'customer_name' => 'required|string|max:255',
+            'customer_work' => 'nullable|string|max:255',
+            'feedback' => 'required|string',
+            'customer_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'rating' => 'nullable|integer|min:1|max:5'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                           ->withErrors($validator)
+                           ->withInput();
+        }
+
+        try {
+            $data = [
+                'customer_name' => $request->customer_name,
+                'customer_work' => $request->customer_work,
+                'feedback' => $request->feedback,
+                'rating' => $request->rating
+            ];
+
+            // Handle image upload
+            if ($request->hasFile('customer_image')) {
+                $image = $request->file('customer_image');
+                $imageName = time() . '_customer_' . $image->getClientOriginalName();
+                $imagePath = $image->storeAs('testimonials', $imageName, 'public');
+                $data['customer_image'] = $imagePath;
+            }
+
+            \App\Models\What_our_customer_say::create($data);
+
+            return redirect()->route('admin.customer_testimonials')
+                           ->with('success', 'Customer testimonial added successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Error adding testimonial: ' . $e->getMessage())
+                           ->withInput();
+        }
+    }
+
+    /**
+     * Update a customer testimonial
+     */
+    public function customerTestimonialsUpdate(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'customer_name' => 'required|string|max:255',
+            'customer_work' => 'nullable|string|max:255',
+            'feedback' => 'required|string',
+            'customer_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'rating' => 'nullable|integer|min:1|max:5'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                           ->withErrors($validator)
+                           ->withInput();
+        }
+
+        try {
+            $testimonial = \App\Models\What_our_customer_say::findOrFail($id);
+
+            $data = [
+                'customer_name' => $request->customer_name,
+                'customer_work' => $request->customer_work,
+                'feedback' => $request->feedback,
+                'rating' => $request->rating
+            ];
+
+            // Handle image upload
+            if ($request->hasFile('customer_image')) {
+                // Delete old image if exists
+                if ($testimonial->customer_image && \Storage::disk('public')->exists($testimonial->customer_image)) {
+                    \Storage::disk('public')->delete($testimonial->customer_image);
+                }
+
+                $image = $request->file('customer_image');
+                $imageName = time() . '_customer_' . $image->getClientOriginalName();
+                $imagePath = $image->storeAs('testimonials', $imageName, 'public');
+                $data['customer_image'] = $imagePath;
+            }
+
+            $testimonial->update($data);
+
+            return redirect()->route('admin.customer_testimonials')
+                           ->with('success', 'Customer testimonial updated successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Error updating testimonial: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Delete a customer testimonial
+     */
+    public function customerTestimonialsDestroy($id)
+    {
+        try {
+            $testimonial = \App\Models\What_our_customer_say::findOrFail($id);
+
+            // Delete associated image
+            if ($testimonial->customer_image && \Storage::disk('public')->exists($testimonial->customer_image)) {
+                \Storage::disk('public')->delete($testimonial->customer_image);
+            }
+
+            $testimonial->delete();
+
+            return redirect()->route('admin.customer_testimonials')
+                           ->with('success', 'Customer testimonial deleted successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Error deleting testimonial: ' . $e->getMessage());
+        }
+    }
     
 }

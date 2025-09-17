@@ -535,6 +535,20 @@
                 </a>
             </div>
             <div class="menu-item">
+                <a href="{{ route('admin.why_choose_us') }}"
+                    class="menu-link {{ request()->routeIs('admin.why_choose_us') ? 'active' : '' }}">
+                    <i class="fas fa-folder-open menu-icon"></i>
+                    <span class="menu-text">Why Choose Us</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.customer_testimonials') }}"
+                    class="menu-link {{ request()->routeIs('admin.customer_testimonials') ? 'active' : '' }}">
+                    <i class="fas fa-folder-open menu-icon"></i>
+                    <span class="menu-text">Customer Testimonials</span>
+                </a>
+            </div>
+            <div class="menu-item">
                 <a href="{{ route('admin.products') }}"
                     class="menu-link {{ request()->routeIs('admin.products*') ? 'active' : '' }}">
                     <i class="fas fa-box menu-icon"></i>
@@ -585,7 +599,8 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+                        <li><a class="dropdown-item" href="#"><i
+                                    class="fas fa-sign-out-alt me-2"></i>Logout</a>
                         </li>
                     </ul>
                 </div>
