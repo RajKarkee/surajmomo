@@ -134,7 +134,7 @@ class AdminController extends Controller
             'instagram_link' => 'nullable|url|max:255',
             'time' => 'nullable|string|max:100',
             'address' => 'nullable|string',
-            'map_link' => 'nullable|url|max:255',
+            'map_link' => 'nullable|url',
         ]);
 
                        
