@@ -13,6 +13,9 @@
     <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
+    <!-- Dropify CSS for file uploads -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css">
+
     <!-- Custom Admin CSS -->
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 
@@ -296,6 +299,50 @@
             left: 100%;
         }
 
+        /* Dropify Custom Styling */
+        .dropify-wrapper {
+            border-radius: 15px;
+            border: 2px dashed var(--primary-color);
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .dropify-wrapper:hover {
+            border-color: var(--secondary-color);
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .dropify-wrapper .dropify-message {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .dropify-wrapper .dropify-message p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .dropify-wrapper .dropify-preview .dropify-render img {
+            border-radius: 10px;
+        }
+
+        .dropify-wrapper .dropify-clear {
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .dropify-wrapper .dropify-clear:hover {
+            background: #ff5252;
+            transform: scale(1.1);
+        }
+
         .btn-primary.btn-modern {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
@@ -481,6 +528,13 @@
                 </a>
             </div>
             <div class="menu-item">
+                <a href="{{ route('admin.about') }}"
+                    class="menu-link {{ request()->routeIs('admin.about') ? 'active' : '' }}">
+                    <i class="fas fa-folder-open menu-icon"></i>
+                    <span class="menu-text">About</span>
+                </a>
+            </div>
+            <div class="menu-item">
                 <a href="{{ route('admin.products') }}"
                     class="menu-link {{ request()->routeIs('admin.products*') ? 'active' : '' }}">
                     <i class="fas fa-box menu-icon"></i>
@@ -589,6 +643,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Dropify JS for file uploads -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
 
     <!-- Custom Admin JS -->
     <script>

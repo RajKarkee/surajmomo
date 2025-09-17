@@ -99,9 +99,14 @@ function loadProducts() {
                         <h4 class="product-title">${product.name}</h4>
                         <p class="product-description">${product.description}</p>
                         <div class="product-price">${product.price ? 'Rs. ' + product.price : 'Price: Contact Us'}</div>
-                        <button class="btn btn-custom w-100 mt-auto" onclick="addToCart(${product.id})">
-                            <i class="fas fa-cart-plus me-2"></i>Add to Cart
-                        </button>
+                        <div class="product-actions mt-auto">
+                            <a href="/product/single?id=${product.id}" class="btn btn-outline-custom btn-sm me-2">
+                                <i class="fas fa-eye me-1"></i>View Details
+                            </a>
+                            <button class="btn btn-custom btn-sm" onclick="addToCart(${product.id})">
+                                <i class="fas fa-cart-plus me-1"></i>Add
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

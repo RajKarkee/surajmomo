@@ -6,6 +6,10 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Models\About;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;   
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -267,4 +271,107 @@ class AdminController extends Controller
         return redirect()->route('admin.jumbotron')
                          ->with('success', 'Jumbotron deleted successfully!');
     }
+
+    public function about(){
+        // Get existing about data or create empty object for form
+        $about = \App\Models\About::first();
+        
+        if (!$about) {
+            $about = new \App\Models\About();
+            // Set default empty values for JSON fields
+            $about->what_we_do = [];
+            $about->our_mission = [];
+            $about->our_story = [];
+        }
+        
+        return view('admin.about', compact('about'));
+    }
+
+    public function aboutUpdate(Request $request)
+    {
+        // Simple validation
+        $request->validate([
+            'what_we_do_img' => 'nullable|image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+            'our_story_img' => 'nullable|image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+        ]);
+
+        try {
+            // Debug: Log what files are being received
+            \Log::info('About Update - Files received:', [
+                'what_we_do_img' => $request->hasFile('what_we_do_img'),
+                'our_story_img' => $request->hasFile('our_story_img'),
+                'what_we_do_img_name' => $request->hasFile('what_we_do_img') ? $request->file('what_we_do_img')->getClientOriginalName() : 'none',
+                'our_story_img_name' => $request->hasFile('our_story_img') ? $request->file('our_story_img')->getClientOriginalName() : 'none'
+            ]);
+
+            // Get or create about record
+            $about = About::firstOrNew([]);
+            
+            // Prepare data for storage with fallbacks
+            $whatWeDoData = [
+                'title' => $request->input('what_we_do.title', 'What We Do'),
+                'lead' => $request->input('what_we_do.lead', 'Default lead text'),
+                'features' => $request->input('what_we_do.features', []),
+                'stats' => $request->input('what_we_do.stats', []),
+            ];
+
+            $ourStoryData = [
+                'title' => $request->input('our_story.title', 'Our Story'),
+                'content' => $request->input('our_story.content', []),
+            ];
+
+            $ourMissionData = [
+                'statement' => $request->input('our_mission.statement', 'Default mission'),
+                'values' => $request->input('our_mission.values', []),
+            ];
+
+            // Handle What We Do image upload
+            if ($request->hasFile('what_we_do_img')) {
+                \Log::info('Processing what_we_do_img upload');
+                
+                // Delete old image if exists
+                if ($about->what_we_do_img && Storage::disk('public')->exists($about->what_we_do_img)) {
+                    Storage::disk('public')->delete($about->what_we_do_img);
+                    \Log::info('Deleted old what_we_do_img: ' . $about->what_we_do_img);
+                }
+
+                $whatWeDoImage = $request->file('what_we_do_img')->store('about/what-we-do', 'public');
+                $about->what_we_do_img = $whatWeDoImage;
+                \Log::info('Saved new what_we_do_img: ' . $whatWeDoImage);
+            }
+
+            // Handle Our Story image upload
+            if ($request->hasFile('our_story_img')) {
+                \Log::info('Processing our_story_img upload');
+                
+                // Delete old image if exists
+                if ($about->our_story_img && Storage::disk('public')->exists($about->our_story_img)) {
+                    Storage::disk('public')->delete($about->our_story_img);
+                    \Log::info('Deleted old our_story_img: ' . $about->our_story_img);
+                }
+
+                $ourStoryImage = $request->file('our_story_img')->store('about/our-story', 'public');
+                $about->our_story_img = $ourStoryImage;
+                \Log::info('Saved new our_story_img: ' . $ourStoryImage);
+            }
+
+            // Update the about record
+            $about->what_we_do = $whatWeDoData;
+            $about->our_story = $ourStoryData;
+            $about->our_mission = $ourMissionData;
+            
+            $saved = $about->save();
+            \Log::info('About record saved: ' . ($saved ? 'success' : 'failed'));
+
+            return redirect()->route('admin.about')
+                ->with('success', 'About page content updated successfully!');
+
+        } catch (\Exception $e) {
+            \Log::error('About update error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'An error occurred while updating: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+    
 }
