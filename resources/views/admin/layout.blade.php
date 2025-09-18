@@ -521,6 +521,13 @@
                 </a>
             </div>
             <div class="menu-item">
+                <a href="{{ route('admin.home_settings') }}"
+                    class="menu-link {{ request()->routeIs('admin.home_settings') ? 'active' : '' }}">
+                    <i class="fas fa-home menu-icon"></i>
+                    <span class="menu-text">Home Settings</span>
+                </a>
+            </div>
+            <div class="menu-item">
                 <a href="{{ route('admin.jumbotron') }}"
                     class="menu-link {{ request()->routeIs('admin.jumbotron') ? 'active' : '' }}">
                     <i class="fas fa-server menu-icon"></i>

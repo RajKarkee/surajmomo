@@ -628,9 +628,19 @@ class AdminController extends Controller
                            ->with('error', 'Error deleting testimonial: ' . $e->getMessage());
         }
     }
-    public function specialOffers(){
+    public function specialOffers(Request $request, $id = null){
         $offers = \App\Models\Offer::all();
-        return view('admin.offer', compact('offers'));
+        $offer = null;
+        $showForm = false;
+        
+        if ($id) {
+            $offer = \App\Models\Offer::findOrFail($id);
+            $showForm = true;
+        } elseif ($request->has('create')) {
+            $showForm = true;
+        }
+        
+        return view('admin.offer', compact('offers', 'offer', 'showForm'));
     }
     public function specialOffersStore(Request $request){
         $request->validate([
@@ -657,6 +667,61 @@ class AdminController extends Controller
 
         return redirect()->route('admin.specialOffers')
                          ->with('success', 'Special offer created successfully!');
+    }
+
+    public function specialOffersUpdate(Request $request, $id){
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
+        ]);
+
+        $offer = \App\Models\Offer::findOrFail($id);
+        $offer->title = $request->input('title');
+        $offer->description = $request->input('description');
+        $offer->start_date = $request->input('start_date');
+        $offer->end_date = $request->input('end_date');
+
+        // Handle image upload
+        if ($request->hasFile('image_path')) {
+            // Delete old image if it exists
+            if ($offer->image_path) {
+                \Storage::disk('public')->delete($offer->image_path);
+            }
+            $imagePath = $request->file('image_path')->store('offers', 'public');
+            $offer->image_path = $imagePath;
+        }
+
+        $offer->save();
+
+        return redirect()->route('admin.specialOffers')
+                         ->with('success', 'Special offer updated successfully!');
+    }
+
+    public function specialOffersDestroy($id){
+        try {
+            $offer = \App\Models\Offer::findOrFail($id);
+            
+            // Delete associated image file if it exists
+            if ($offer->image_path) {
+                \Storage::disk('public')->delete($offer->image_path);
+            }
+            
+            $offer->delete();
+            
+            return redirect()->route('admin.specialOffers')
+                           ->with('success', 'Special offer deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Error deleting offer: ' . $e->getMessage());
+        }
+    }
+
+    public function homeSettings(){
+    
+        return view('admin.homesetting');
     }
     
 }

@@ -25,7 +25,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/about', [AdminController::class, 'about'])->name('about');
     Route::put('/about/update', [AdminController::class, 'aboutUpdate'])->name('about.update');
-    
+    Route::get('/home_settings', [AdminController::class, 'homeSettings'])->name('home_settings');
     // Why Choose Us routes
     Route::get('/why-choose-us', [AdminController::class, 'whyChooseUs'])->name('why_choose_us');
     Route::post('/why-choose-us', [AdminController::class, 'whyChooseUsStore'])->name('why_choose_us.store');
@@ -37,7 +37,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/customer-testimonials', [AdminController::class, 'customerTestimonialsStore'])->name('customer_testimonials.store');
     Route::put('/customer-testimonials/{id}', [AdminController::class, 'customerTestimonialsUpdate'])->name('customer_testimonials.update');
     Route::delete('/customer-testimonials/{id}', [AdminController::class, 'customerTestimonialsDestroy'])->name('customer_testimonials.destroy');
+    
+    // Special Offers routes
     Route::get('/specialOffers', [AdminController::class, 'specialOffers'])->name('specialOffers');
+    Route::get('/specialOffers/{id}/edit', [AdminController::class, 'specialOffers'])->name('specialOffers.edit');
     Route::post('/specialOffers', [AdminController::class, 'specialOffersStore'])->name('specialOffers.store');
     Route::put('/specialOffers/{id}', [AdminController::class, 'specialOffersUpdate'])->name('specialOffers.update');
     Route::delete('/specialOffers/{id}', [AdminController::class, 'specialOffersDestroy'])->name('specialOffers.destroy');
