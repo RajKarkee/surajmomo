@@ -115,6 +115,92 @@
                             </div>
                         </div>
 
+                        <!-- Color Scheme Section -->
+                        <div class="col-12 mb-4">
+                            <hr class="my-4">
+                            <h5 class="text-dark mb-3">
+                                <i class="fas fa-palette me-2"></i>Color Scheme Configuration
+                            </h5>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="primary_color" class="form-label fw-bold text-dark">
+                                    <i class="fas fa-circle me-2"
+                                        style="color: {{ old('primary_color', $settings->primary_color ?? '#0d6efd') }}"></i>Primary
+                                    Color
+                                </label>
+                                <input type="color" class="form-control form-control-lg color-picker"
+                                    id="primary_color" name="primary_color"
+                                    value="{{ old('primary_color', $settings->primary_color ?? '#0d6efd') }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="secondary_color" class="form-label fw-bold text-dark">
+                                    <i class="fas fa-circle me-2"
+                                        style="color: {{ old('secondary_color', $settings->secondary_color ?? '#6c757d') }}"></i>Secondary
+                                    Color
+                                </label>
+                                <input type="color" class="form-control form-control-lg color-picker"
+                                    id="secondary_color" name="secondary_color"
+                                    value="{{ old('secondary_color', $settings->secondary_color ?? '#6c757d') }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="accent_color" class="form-label fw-bold text-dark">
+                                    <i class="fas fa-circle me-2"
+                                        style="color: {{ old('accent_color', $settings->accent_color ?? '#ffc107') }}"></i>Accent
+                                    Color
+                                </label>
+                                <input type="color" class="form-control form-control-lg color-picker" id="accent_color"
+                                    name="accent_color"
+                                    value="{{ old('accent_color', $settings->accent_color ?? '#ffc107') }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="dark_color" class="form-label fw-bold text-dark">
+                                    <i class="fas fa-circle me-2"
+                                        style="color: {{ old('dark_color', $settings->dark_color ?? '#212529') }}"></i>Dark
+                                    Color
+                                </label>
+                                <input type="color" class="form-control form-control-lg color-picker" id="dark_color"
+                                    name="dark_color"
+                                    value="{{ old('dark_color', $settings->dark_color ?? '#212529') }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="light_color" class="form-label fw-bold text-dark">
+                                    <i class="fas fa-circle me-2"
+                                        style="color: {{ old('light_color', $settings->light_color ?? '#f8f9fa') }}"></i>Light
+                                    Color
+                                </label>
+                                <input type="color" class="form-control form-control-lg color-picker" id="light_color"
+                                    name="light_color"
+                                    value="{{ old('light_color', $settings->light_color ?? '#f8f9fa') }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label for="white_color" class="form-label fw-bold text-dark">
+                                    <i class="fas fa-circle me-2"
+                                        style="color: {{ old('white_color', $settings->white_color ?? '#ffffff') }}"></i>White
+                                    Color
+                                </label>
+                                <input type="color" class="form-control form-control-lg color-picker" id="white_color"
+                                    name="white_color"
+                                    value="{{ old('white_color', $settings->white_color ?? '#ffffff') }}">
+                            </div>
+                        </div>
+
                         <!-- Address and Map Section -->
                         <div class="col-md-8 mb-3">
                             <div class="form-group">
@@ -213,6 +299,33 @@
             border-radius: 8px;
             font-weight: 500;
         }
+
+        .color-picker {
+            height: 50px !important;
+            border-radius: 8px !important;
+            cursor: pointer;
+            padding: 0.25rem !important;
+        }
+
+        .color-picker::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 6px;
+        }
+
+        .color-picker::-webkit-color-swatch {
+            border: none;
+            border-radius: 6px;
+        }
+
+        .color-picker::-moz-color-swatch {
+            border: none;
+            border-radius: 6px;
+        }
+
+        hr {
+            border-color: #e9ecef;
+            opacity: 0.5;
+        }
     </style>
 @endpush
 
@@ -237,6 +350,13 @@
                     'maxHeight': 'The image height is too big.',
                     'imageFormat': 'The image format is not allowed.'
                 }
+            });
+
+            // Color picker change event
+            $('.color-picker').on('change', function() {
+                const colorValue = $(this).val();
+                const iconElement = $(this).closest('.form-group').find('label i.fa-circle');
+                iconElement.css('color', colorValue);
             });
         });
     </script>

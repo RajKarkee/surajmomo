@@ -37,6 +37,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/customer-testimonials', [AdminController::class, 'customerTestimonialsStore'])->name('customer_testimonials.store');
     Route::put('/customer-testimonials/{id}', [AdminController::class, 'customerTestimonialsUpdate'])->name('customer_testimonials.update');
     Route::delete('/customer-testimonials/{id}', [AdminController::class, 'customerTestimonialsDestroy'])->name('customer_testimonials.destroy');
+    Route::get('/specialOffers', [AdminController::class, 'specialOffers'])->name('specialOffers');
+    Route::post('/specialOffers', [AdminController::class, 'specialOffersStore'])->name('specialOffers.store');
+    Route::put('/specialOffers/{id}', [AdminController::class, 'specialOffersUpdate'])->name('specialOffers.update');
+    Route::delete('/specialOffers/{id}', [AdminController::class, 'specialOffersDestroy'])->name('specialOffers.destroy');
     
     Route::get('/products/create', [AdminController::class, 'createProduct'])->name('products.create');
     Route::post('/products', [AdminController::class, 'storeProduct'])->name('products.store');

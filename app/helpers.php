@@ -47,6 +47,13 @@ if (!function_exists('getAllSettings')) {
                     'time' => '',
                     'address' => '',
                     'map_link' => '',
+                    'primary_color' => '#e74c3c',
+                    'secondary_color' => '#27ae60',
+                    'accent_color' => '#f39c12',
+                    'dark_color' => '#2c3e50',
+                    'light_color' => '#ecf0f1',
+                    'white_color' => '#ffffff',
+                    
                     'logo_path' => null
                 ];
             }

@@ -22,6 +22,20 @@
     <!-- Custom CSS -->
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
     @stack('scripts')
+    <style>
+        :root {
+            --primary-color: {{ $globalSettings->primary_color }};
+            --secondary-color: {{ $globalSettings->secondary_color }};
+            --accent-color: {{ $globalSettings->accent_color }};
+            --dark-color: {{ $globalSettings->dark_color }};
+            --light-color: {{ $globalSettings->light_color }};
+            --white: {{ $globalSettings->white_color }};
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg,
+                    var(--primary-color),
+                    var(--accent-color));
+        }
+    </style>
 </head>
 
 <body>

@@ -23,6 +23,7 @@ class HomeController extends Controller
 
     public function productSingle()
     {
+        
         return view('productSingle');
     }
 }

@@ -549,6 +549,13 @@
                 </a>
             </div>
             <div class="menu-item">
+                <a href="{{ route('admin.specialOffers') }}"
+                    class="menu-link {{ request()->routeIs('admin.specialOffers') ? 'active' : '' }}">
+                    <i class="fas fa-fire menu-icon"></i>
+                    <span class="menu-text">Special Offers</span>
+                </a>
+            </div>
+            <div class="menu-item">
                 <a href="{{ route('admin.products') }}"
                     class="menu-link {{ request()->routeIs('admin.products*') ? 'active' : '' }}">
                     <i class="fas fa-box menu-icon"></i>

@@ -139,6 +139,12 @@ class AdminController extends Controller
             'time' => 'nullable|string|max:100',
             'address' => 'nullable|string',
             'map_link' => 'nullable|url',
+            'primary_color' => 'nullable|string|max:7',
+            'secondary_color' => 'nullable|string|max:7',
+            'accent_color' => 'nullable|string|max:7',
+            'dark_color' => 'nullable|string|max:7',
+            'light_color' => 'nullable|string|max:7',
+            'white_color' => 'nullable|string|max:7',
         ]);
 
                        
@@ -167,6 +173,12 @@ class AdminController extends Controller
         $settings->time = $request->input('time');
         $settings->address = $request->input('address');
         $settings->map_link = $request->input('map_link');
+        $settings->primary_color = $request->input('primary_color', '#e74c3c');
+        $settings->secondary_color = $request->input('secondary_color', '#27ae60');
+        $settings->accent_color = $request->input('accent_color', '#8e44ad');
+        $settings->dark_color = $request->input('dark_color', '#34495e');
+        $settings->light_color = $request->input('light_color', '#ecf0f1');
+        $settings->white_color = $request->input('white_color', '#ffffff');
 
         $settings->save();
 
@@ -615,6 +627,36 @@ class AdminController extends Controller
             return redirect()->back()
                            ->with('error', 'Error deleting testimonial: ' . $e->getMessage());
         }
+    }
+    public function specialOffers(){
+        $offers = \App\Models\Offer::all();
+        return view('admin.offer', compact('offers'));
+    }
+    public function specialOffersStore(Request $request){
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
+        ]);
+
+        $offer = new \App\Models\Offer();
+        $offer->title = $request->input('title');
+        $offer->description = $request->input('description');
+        $offer->start_date= $request->input('start_date');
+        $offer->end_date= $request->input('end_date');
+
+        // Handle image upload
+        if ($request->hasFile('image_path')) {
+            $imagePath = $request->file('image_path')->store('offers', 'public');
+            $offer->image_path = $imagePath;
+        }
+
+        $offer->save();
+
+        return redirect()->route('admin.specialOffers')
+                         ->with('success', 'Special offer created successfully!');
     }
     
 }
