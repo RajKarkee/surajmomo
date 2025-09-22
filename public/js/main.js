@@ -250,6 +250,7 @@ function checkout() {
 
     const orderModal = new bootstrap.Modal(document.getElementById('orderModal'));
     orderModal.show();
+   
 }
 
 // Order summary

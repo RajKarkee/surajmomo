@@ -8,8 +8,9 @@
                     <h1>Delicious Frozen Momos, Anytime!</h1>
                     <p>Fresh taste, frozen to perfection.</p>
                     <div class="hero-buttons">
-                        <button class="btn btn-custom" onclick="showPage('products')">Shop Now</button>
-                        <button class="btn btn-outline-custom" onclick="showPage('about')">Learn More</button>
+                        <button class="btn btn-custom" onclick="window.location='{{ route('product') }}'">Shop Now</button>
+                        <button class="btn btn-outline-custom" onclick="window.location='{{ route('about') }}'">Learn
+                            More</button>
                     </div>
                 </div>
             </div>

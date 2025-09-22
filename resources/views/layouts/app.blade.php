@@ -56,9 +56,11 @@
                         <div class="d-flex justify-content-between mb-3">
                             <h5>Total: Rs. <span id="cartTotal">0</span></h5>
                         </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continue
-                            Shopping</button>
+                        <a href="{{ route('product') }}" class="btn btn-secondary">Continue Shopping</a>
+
+
                         <button type="button" class="btn btn-custom" onclick="checkout()">Checkout</button>
+
                     </div>
                 </div>
             </div>
