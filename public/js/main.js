@@ -245,19 +245,27 @@ function checkout() {
         showToast('Your cart is empty!', 'warning');
         return;
     }
-
+    localStorage.setItem('frozenMomoCart', JSON.stringify(cart));
     loadOrderSummary();
-
+    
     const orderModal = new bootstrap.Modal(document.getElementById('orderModal'));
-    orderModal.show();
-   
+    const cardModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
+    if (cardModal) cardModal.hide();
+    // orderModal.show();
+    const orderConfirmationUrl = "{{ route('orderConfirmation') }}";
+   window.location.href = "/orderConfirm";
 }
 
 // Order summary
 function loadOrderSummary() {
     const orderSummary = $('#orderSummary');
     const orderTotal = $('#orderTotal');
-
+    const cart = JSON.parse(localStorage.getItem('frozenMomoCart')) || [];
+    if(cart.length === 0) {
+        orderSummary.html('<p class="text-center text-muted">Your cart is empty.</p>');
+        orderTotal.text('0');
+        return;
+    }  
     let summaryHtml = '';
     let total = 0;
 

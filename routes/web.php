@@ -9,6 +9,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/product', [HomeController::class, 'products'])->name('product');
 Route::get('/product/single', [HomeController::class, 'productSingle'])->name('product.single');
+Route::get('/orderConfirm', [HomeController::class, 'orderConfirmation'])->name('orderConfirmation');
 
 // Admin routes
 Route::prefix('admin')->name('admin.')->group(function () {
