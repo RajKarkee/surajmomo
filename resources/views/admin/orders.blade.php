@@ -12,10 +12,11 @@
                         <tr>
                             <th>Order Code</th>
                             <th>Customer</th>
+                            <th>Email</th>
                             <th>Type</th>
                             <th>Business</th>
-                            <th>Address</th>
                             <th>Phone</th>
+                            <th>Total</th>
                             <th>Map</th>
                             <th>Ordered At</th>
                             <th>Actions</th>
@@ -26,10 +27,11 @@
                             <tr>
                                 <td>{{ $order->order_code }}</td>
                                 <td>{{ $order->customer_name }}</td>
+                                <td>{{ $order->customer_email ?? 'N/A' }}</td>
                                 <td>{{ ucfirst($order->order_type) }}</td>
                                 <td>{{ $order->business_name }}</td>
-                                <td>{{ $order->address }}</td>
                                 <td>{{ $order->phone }}</td>
+                                <td>Rs. {{ number_format($order->total ?? 0, 2) }}</td>
                                 <td>
                                     @if ($order->map_coordinates)
                                         <a href="https://maps.google.com/?q={{ $order->map_coordinates }}"
@@ -56,7 +58,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="text-center">No orders found.</td>
+                                <td colspan="10" class="text-center">No orders found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -79,6 +81,7 @@
                         </div>
                         <div class="modal-body">
                             <div><strong>Customer:</strong> {{ $order->customer_name }}</div>
+                            <div><strong>Email:</strong> {{ $order->customer_email ?? 'N/A' }}</div>
                             <div><strong>Type:</strong> {{ ucfirst($order->order_type) }}</div>
                             @if ($order->order_type === 'business')
                                 <div><strong>Business:</strong> {{ $order->business_name }}</div>

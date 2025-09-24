@@ -19,6 +19,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register custom artisan commands (useful for temporary diagnostics)
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \App\Console\Commands\SendTestEmail::class,
+            ]);
+        }
     }
 }

@@ -80,6 +80,12 @@
                                 pattern="[0-9]{10,15}">
                         </div>
                         <div class="mb-3">
+                            <label for="customerEmail" class="form-label">Email Address (Optional)</label>
+                            <input type="email" class="form-control" id="customerEmail" name="customerEmail"
+                                placeholder="your@email.com">
+                            <div class="form-text">We'll send you order updates and receipts at this email.</div>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Select Delivery Location on Map</label>
                             <div id="leafletMap" style="height: 220px; border-radius: 8px; overflow: hidden;"></div>
                             <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="useMyLocationBtn">
