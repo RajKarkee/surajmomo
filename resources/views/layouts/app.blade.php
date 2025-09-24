@@ -12,6 +12,8 @@
     <meta property="og:description" content="Fresh taste, frozen to perfection. Order now!">
     <meta property="og:image" content="https://images.unsplash.com/photo-1496412705862-e0088f16f791?w=800">
     <meta property="og:type" content="website">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @yield('head')
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->

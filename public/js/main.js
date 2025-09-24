@@ -253,7 +253,7 @@ function checkout() {
     if (cardModal) cardModal.hide();
     // orderModal.show();
     const orderConfirmationUrl = "{{ route('orderConfirmation') }}";
-   window.location.href = "/orderConfirm";
+   window.location.href = "/product/orderConfirm";
 }
 
 // Order summary

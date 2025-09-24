@@ -4,12 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/product', [HomeController::class, 'products'])->name('product');
 Route::get('/product/single', [HomeController::class, 'productSingle'])->name('product.single');
-Route::get('/orderConfirm', [HomeController::class, 'orderConfirmation'])->name('orderConfirmation');
+Route::get('/product/orderConfirm', [HomeController::class, 'orderConfirmation'])->name('orderConfirmation');
+Route::post('/orderConfirm', [OrderController::class, 'store']);
+
 
 // Admin routes
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -38,7 +41,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/customer-testimonials', [AdminController::class, 'customerTestimonialsStore'])->name('customer_testimonials.store');
     Route::put('/customer-testimonials/{id}', [AdminController::class, 'customerTestimonialsUpdate'])->name('customer_testimonials.update');
     Route::delete('/customer-testimonials/{id}', [AdminController::class, 'customerTestimonialsDestroy'])->name('customer_testimonials.destroy');
-    
+    //Order management
+       Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::delete('/orders/delete/{id}', [OrderController::class, 'orderDestroy'])->name('orders.delete');
     // Special Offers routes
     Route::get('/specialOffers', [AdminController::class, 'specialOffers'])->name('specialOffers');
     Route::get('/specialOffers/{id}/edit', [AdminController::class, 'specialOffers'])->name('specialOffers.edit');
@@ -52,6 +57,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('/products/{product}', [AdminController::class, 'updateProduct'])->name('products.update');
     Route::delete('/products/{product}', [AdminController::class, 'destroyProduct'])->name('products.destroy');
     Route::patch('/products/{product}/toggle-status', [AdminController::class, 'toggleStatus'])->name('products.toggle-status');
+ 
 });
 
 // API routes for products

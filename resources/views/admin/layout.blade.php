@@ -58,6 +58,12 @@
             z-index: 1000;
             transition: all 0.3s ease;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+            /* allow sidebar scrolling when content overflows */
+            -webkit-overflow-scrolling: touch;
+            /* smooth momentum scrolling on mobile */
+            scrollbar-gutter: stable both-edges;
+            /* avoid layout shift when scrollbar appears */
         }
 
         .sidebar.collapsed {
@@ -127,6 +133,27 @@
             display: none;
         }
 
+        /* When collapsed, shift icons left so they remain visible and aligned */
+        .sidebar .menu-icon,
+        .sidebar .sidebar-header i {
+            transition: transform 0.2s ease, margin 0.2s ease;
+        }
+
+        .sidebar.collapsed .menu-icon {
+            margin-right: 0;
+            /* remove extra spacing when text hidden */
+            transform: translateX(-15px);
+            /* shift left */
+            text-align: center;
+            width: 100%;
+        }
+
+        .sidebar.collapsed .sidebar-header i {
+            margin-right: 0;
+            transform: translateX(-15px);
+            display: inline-block;
+        }
+
         /* Main Content */
         .main-content {
             margin-left: var(--sidebar-width);
@@ -165,6 +192,16 @@
         .sidebar-toggle:hover {
             background: var(--light-color);
             transform: scale(1.1);
+        }
+
+        /* Move the toggle a bit left when sidebar is collapsed so the icon isn't covered */
+        .sidebar.collapsed+.main-content .sidebar-toggle {
+            transform: translateX(-15px);
+        }
+
+        /* Preserve hover scale while keeping the left shift when collapsed */
+        .sidebar.collapsed+.main-content .sidebar-toggle:hover {
+            transform: translateX(-15px) scale(1.1);
         }
 
         .topbar-actions {
@@ -468,23 +505,107 @@
             }
         }
 
-        /* Custom Scrollbar */
+        /* Custom Scrollbar — modern themed (WebKit + Firefox support) */
+
+        /* Firefox: use thin scrollbar and set colors (no gradients in Firefox) */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(102, 126, 234, 0.95) rgba(255, 255, 255, 0.04);
+        }
+
+        /* WebKit browsers (Chrome, Edge, Safari) */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 12px;
+            height: 12px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 4px;
+            background: linear-gradient(180deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+            border-radius: 12px;
+            border: 3px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.12);
+            background-clip: padding-box;
+            transition: transform 0.15s ease, filter 0.15s ease;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            transform: translateX(1px);
+            filter: brightness(1.06);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        /* Slightly slimmer scrollbars for preview panel and small scroll areas */
+        .preview-content::-webkit-scrollbar,
+        .content-wrapper::-webkit-scrollbar,
+        iframe::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .preview-content::-webkit-scrollbar-thumb,
+        .content-wrapper::-webkit-scrollbar-thumb,
+        iframe::-webkit-scrollbar-thumb {
+            border-radius: 8px;
+            border: 3px solid rgba(255, 255, 255, 0.04);
+        }
+
+        /* Make scrollable form elements feel consistent */
+        textarea,
+        select,
+        .modern-card,
+        .preview-content {
+            scrollbar-width: thin;
+            /* Firefox */
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+            /* IE/Edge */
+        }
+
+        /* Accessibility: visible focus on draggable scrollbar thumb when interacting */
+        ::-webkit-scrollbar-thumb:active {
+            box-shadow: 0 8px 22px rgba(102, 126, 234, 0.18);
+            transform: scale(0.98);
+        }
+
+        /* Fallback: keep minimal neutral appearance if browser doesn't support custom scrollbars */
+        .no-custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        /* Sidebar-specific scrollbar (dark theme, compact) */
+        .sidebar {
+            scrollbar-width: thin;
+            /* Firefox */
+            scrollbar-color: rgba(180, 180, 200, 0.18) rgba(0, 0, 0, 0.18);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(255, 255, 255, 0.02));
+            border-radius: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(118, 75, 162, 0.85), rgba(102, 126, 234, 0.9));
+            border-radius: 8px;
+            border: 2px solid rgba(0, 0, 0, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            filter: brightness(1.08);
+            transform: translateX(0);
         }
     </style>
 
@@ -573,6 +694,13 @@
                 <a href="{{ route('admin.products.create') }}" class="menu-link">
                     <i class="fas fa-plus menu-icon"></i>
                     <span class="menu-text">Add Product</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.orders') }}"
+                    class="menu-link {{ request()->routeIs('admin.orders*') ? 'active' : '' }}">
+                    <i class="fas fa-box menu-icon"></i>
+                    <span class="menu-text">Orders</span>
                 </a>
             </div>
             <div class="menu-item">
