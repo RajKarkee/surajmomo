@@ -128,7 +128,15 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
+                        <div class="mb-3">
+                            <label for="sort_order" class="form-label">Sort Order</label>
+                            <input type="number" class="form-control @error('sort_order') is-invalid @enderror"
+                                id="sort_order" name="sort_order" value="{{ old('sort_order', 0) }}" min="0"
+                                placeholder="0 for highest priority">
+                            @error('sort_order')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('admin.products') }}" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-primary">

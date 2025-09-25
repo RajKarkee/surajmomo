@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\DeviceTokenController;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
@@ -12,6 +13,9 @@ Route::get('/product', [HomeController::class, 'products'])->name('product');
 Route::get('/product/single', [HomeController::class, 'productSingle'])->name('product.single');
 Route::get('/product/orderConfirm', [HomeController::class, 'orderConfirmation'])->name('orderConfirmation');
 Route::post('/orderConfirm', [OrderController::class, 'store']);
+
+// Device token registration (mobile/web clients should POST token here)
+Route::post('/device-token', [DeviceTokenController::class, 'register']);
 
 
 // Admin routes

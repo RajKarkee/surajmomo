@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Order;
 use App\Mail\OrderPlaced;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendOrderPushNotification;
 
 class OrderController extends Controller
 {
@@ -49,7 +50,9 @@ class OrderController extends Controller
             //     Mail::to($orderModel->customer_email)->bcc($adminEmail)->send(new OrderPlaced($orderModel));
             // } else {
                 // Send to admin only
-                Mail::to($adminEmail)->send(new OrderPlaced($orderModel));
+        Mail::to($adminEmail)->send(new OrderPlaced($orderModel));
+        // Dispatch push notification job (fire-and-forget)
+        SendOrderPushNotification::dispatch($orderModel);
           
         } catch (\Exception $e) {
             Log::error('Order email failed for order_id='.$orderModel->id.': '.$e->getMessage());

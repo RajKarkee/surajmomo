@@ -197,6 +197,16 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label for="sort_order" class="form-label">Sort Order</label>
+                            <input type="number" class="form-control @error('sort_order') is-invalid @enderror"
+                                id="sort_order" name="sort_order" value="{{ old('sort_order', 0) }}" min="0"
+                                placeholder="0 for highest priority">
+                            @error('sort_order')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
 
                         <div class="d-flex justify-content-end gap-3 pt-4 border-top">
                             <a href="{{ route('admin.products') }}" class="btn btn-outline-secondary">
@@ -399,8 +409,8 @@
                 ${imageUrl ? 
                     `<img src="${imageUrl}" class="card-img-top" style="height: 200px; object-fit: cover;" onerror="this.style.display='none'">` :
                     `<div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                            <i class="fas fa-image fa-2x text-muted"></i>
-                        </div>`
+                                <i class="fas fa-image fa-2x text-muted"></i>
+                            </div>`
                 }
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-2">
@@ -440,11 +450,11 @@
                     ${formData.image_url ? 
                         `<img src="${formData.image_url}" class="img-fluid rounded shadow" style="max-height: 400px; width: 100%; object-fit: cover;">` :
                         `<div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 300px;">
-                                <div class="text-center">
-                                    <i class="fas fa-image fa-3x text-muted mb-3"></i>
-                                    <p class="text-muted">No image provided</p>
-                                </div>
-                            </div>`
+                                    <div class="text-center">
+                                        <i class="fas fa-image fa-3x text-muted mb-3"></i>
+                                        <p class="text-muted">No image provided</p>
+                                    </div>
+                                </div>`
                     }
                 </div>
                 <div class="col-md-6">
@@ -467,17 +477,17 @@
                     </div>
                     
                     ${formData.spice_level !== 'Not specified' ? `
-                            <div class="mb-3">
-                                <strong>Spice Level:</strong> <span class="badge badge-modern bg-danger">${formData.spice_level}</span>
-                            </div>
-                        ` : ''}
+                                <div class="mb-3">
+                                    <strong>Spice Level:</strong> <span class="badge badge-modern bg-danger">${formData.spice_level}</span>
+                                </div>
+                            ` : ''}
                     
                     ${formData.ingredients !== 'Not specified' ? `
-                            <div class="mb-3">
-                                <strong>Ingredients:</strong>
-                                <p class="text-muted">${formData.ingredients}</p>
-                            </div>
-                        ` : ''}
+                                <div class="mb-3">
+                                    <strong>Ingredients:</strong>
+                                    <p class="text-muted">${formData.ingredients}</p>
+                                </div>
+                            ` : ''}
                 </div>
             </div>
         `;

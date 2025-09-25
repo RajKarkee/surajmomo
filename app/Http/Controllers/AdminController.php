@@ -55,7 +55,8 @@ class AdminController extends Controller
             'image_url' => 'nullable|url',
             'status' => 'required|in:active,inactive',
             'ingredients' => 'nullable|string',
-            'spice_level' => 'nullable|in:mild,medium,spicy,very_spicy'
+            'spice_level' => 'nullable|in:mild,medium,spicy,very_spicy',
+            'sort_order' => 'nullable|integer|min:0'
         ]);
 
         Product::create($validated);

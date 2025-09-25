@@ -29,6 +29,7 @@
                                 <th>Category</th>
                                 <th>Price</th>
                                 <th>Status</th>
+                                <th>Sort Order</th>
                                 <th>Spice Level</th>
                                 <th>Created</th>
                                 <th>Actions</th>
@@ -72,6 +73,7 @@
                                             </button>
                                         </form>
                                     </td>
+                                    <td>{{ $product->sort_order }}</td>
                                     <td>
                                         @if ($product->spice_level)
                                             <span

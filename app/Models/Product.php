@@ -16,6 +16,7 @@ class Product extends Model
         'image_url',
         'category',
         'status',
+        'sort_order',
         'ingredients',
         'spice_level'
     ];
@@ -32,5 +33,9 @@ class Product extends Model
     public function scopeByCategory($query, $category)
     {
         return $query->where('category', $category);
+    }
+    public function scopeSorted($query)
+    {
+        return $query->orderBy('sort_order')->orderBy('name');
     }
 }
