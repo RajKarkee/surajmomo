@@ -10,6 +10,7 @@ use App\Models\About;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;   
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -721,8 +722,137 @@ class AdminController extends Controller
     }
 
     public function homeSettings(){
-    
-        return view('admin.homesetting');
+        $homecontrol = DB::table('home_controls')->get();
+
+        return view('admin.homesetting', compact('homecontrol'));
     }
+
+    // Show form to add a new home_control entry
+    public function homeSettingsAdd()
+    {
+        // Pull lists for products and why_choose_us to populate select fields
+        $products = Product::orderBy('name')->get(['id', 'name']);
+        $why = DB::table('why_choose_uses')->orderBy('title')->get(['id', 'title']);
+        return view('admin.homesettingaddd', compact('products', 'why'));
+    }
+
+    public function homeSettingsStore(Request $request)
+    {
+        $request->validate([
+            'item' => 'required|string',
+            'product_id' => 'nullable|integer|exists:products,id',
+            'why_choose_us' => 'nullable|integer|exists:why_choose_uses,id',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $data = [
+            'item' => $request->input('item'),
+            'product_id' => $request->input('product_id') ?: null,
+            'why_choose_us' => $request->input('why_choose_us') ?: null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+
+        DB::table('home_controls')->insert($data);
+
+        return redirect()->route('admin.home_settings')->with('success', 'Home control entry added');
+    }
+
+    // Return JSON data for DataTables
+    public function homeSettingsData(Request $request)
+    {
+        // Log request for debugging DataTables AJAX issues
+        Log::info('homeSettingsData called', ['params' => $request->all(), 'ip' => $request->ip()]);
+
+        $query = DB::table('home_controls')
+            ->leftJoin('products', 'home_controls.product_id', '=', 'products.id')
+            ->leftJoin('why_choose_uses', 'home_controls.why_choose_us', '=', 'why_choose_uses.id')
+            ->select('home_controls.*', 'products.name as product_name', 'why_choose_uses.title as why_title');
+
+        // filter by type: product or why
+        $type = $request->input('type');
+        if ($type === 'product') {
+            $query->where(function ($q) {
+                $q->where('home_controls.item', 'product')->orWhereNotNull('home_controls.product_id');
+            });
+        } elseif ($type === 'why') {
+            $query->where(function ($q) {
+                $q->where('home_controls.item', 'like', '%why%')->orWhereNotNull('home_controls.why_choose_us');
+            });
+        }
+
+        // DataTables parameters
+        $start = (int) $request->input('start', 0);
+        $length = (int) $request->input('length', 10);
+        $search = $request->input('search.value');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('home_controls.item', 'like', "%{$search}%")
+                  ->orWhere('products.name', 'like', "%{$search}%")
+                  ->orWhere('why_choose_uses.title', 'like', "%{$search}%");
+            });
+        }
+
+        try {
+            $total = $query->count();
+            $data = $query->orderBy('home_controls.id', 'desc')
+                          ->offset($start)
+                          ->limit($length)
+                          ->get();
+
+            Log::info('homeSettingsData result', ['type' => $type, 'total' => $total, 'returned' => count($data)]);
+
+            return response()->json([
+                'draw' => (int) $request->input('draw', 1),
+                'recordsTotal' => $total,
+                'recordsFiltered' => $total,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('homeSettingsData error: ' . $e->getMessage(), ['exception' => $e]);
+            return response()->json([
+                'error' => 'Server error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Show edit form
+    public function homeSettingsEdit($id)
+    {
+        $hc = DB::table('home_controls')->where('id', $id)->first();
+        if (! $hc) abort(404);
+        $products = Product::orderBy('name')->get(['id', 'name']);
+        $why = DB::table('why_choose_uses')->orderBy('title')->get(['id', 'title']);
+        return view('admin.homesettingedit', compact('hc', 'products', 'why'));
+    }
+
+    // Update
+    public function homeSettingsUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'item' => 'required|string',
+            'product_id' => 'nullable|integer|exists:products,id',
+            'why_choose_us' => 'nullable|integer|exists:why_choose_uses,id',
+        ]);
+
+        DB::table('home_controls')->where('id', $id)->update([
+            'item' => $request->input('item'),
+            'product_id' => $request->input('product_id') ?: null,
+            'why_choose_us' => $request->input('why_choose_us') ?: null,
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('admin.home_settings')->with('success', 'Updated');
+    }
+
+    // Delete
+    public function homeSettingsDestroy($id)
+    {
+        DB::table('home_controls')->where('id', $id)->delete();
+        return response()->json(['status' => 'ok']);
+    }
+   
     
 }

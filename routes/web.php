@@ -34,6 +34,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/about', [AdminController::class, 'about'])->name('about');
     Route::put('/about/update', [AdminController::class, 'aboutUpdate'])->name('about.update');
     Route::get('/home_settings', [AdminController::class, 'homeSettings'])->name('home_settings');
+    Route::get('/home_settings/add', [AdminController::class, 'homeSettingsAdd'])->name('home_settings.add');
+    Route::post('/home_settings/store', [AdminController::class, 'homeSettingsStore'])->name('home_settings.store');
+    // AJAX data and management for home_controls
+    Route::get('/home_settings/data', [AdminController::class, 'homeSettingsData'])->name('home_settings.data');
+    Route::get('/home_settings/{id}/edit', [AdminController::class, 'homeSettingsEdit'])->name('home_settings.edit');
+    Route::put('/home_settings/{id}', [AdminController::class, 'homeSettingsUpdate'])->name('home_settings.update');
+    Route::delete('/home_settings/{id}', [AdminController::class, 'homeSettingsDestroy'])->name('home_settings.destroy');
     // Why Choose Us routes
     Route::get('/why-choose-us', [AdminController::class, 'whyChooseUs'])->name('why_choose_us');
     Route::post('/why-choose-us', [AdminController::class, 'whyChooseUsStore'])->name('why_choose_us.store');

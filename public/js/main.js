@@ -32,9 +32,14 @@ async function fetchProducts() {
             description: product.description,
             price: product.price,
             image: product.image_url, // No fallback - let it be null/empty
+            sort_order: product.sort_order ?? 0,
             category: product.category,
             status: product.status
-        })).filter(product => product.status === 'active'); // Only show active products
+        }))
+        // Ensure we show active products only; backend returns rows ordered by sort_order already
+        .filter(product => product.status === 'active')
+        // Stable fallback sort in case backend didn't order: by sort_order then id
+        .sort((a, b) => (a.sort_order - b.sort_order) || (a.id - b.id));
         
         loadProducts(); // Load products after fetching
         return products;

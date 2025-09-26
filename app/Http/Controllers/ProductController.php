@@ -9,7 +9,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::active()->get();
+        // Return active products ordered by sort_order ASC, include sort_order and image_url in payload
+        $products = Product::active()->sorted()->get(['id', 'name', 'description', 'price', 'image_url', 'category', 'status', 'sort_order']);
         return response()->json($products);
     }
 
