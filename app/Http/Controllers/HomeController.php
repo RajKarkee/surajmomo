@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\offer;
+use App\Models\Jumbotron;
 
 class HomeController extends Controller
 {
@@ -13,7 +15,15 @@ class HomeController extends Controller
 
     public function products()
     {
-        return view('product');
+         $tz = 'Asia/Kathmandu';
+    $now = \Carbon\Carbon::now($tz);
+    
+ 
+    $offers = Offer::whereDate('start_date', '<=', $now)
+                   ->whereDate('end_date', '>=', $now)
+                   ->get();
+                   $jumbotron=Jumbotron::where('page','product')->first();
+        return view('product', compact('offers','jumbotron'));
     }
 
     public function about()

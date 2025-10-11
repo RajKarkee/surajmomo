@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use App\Models\offers;
 
 class FrontController extends Controller
 {
@@ -20,6 +21,8 @@ class FrontController extends Controller
     }
 
     public function product(){
-        return view('product');
+        $offers = offers::all();
+        dd($offers);
+        return view('product', compact('offers'));
     }
 }
